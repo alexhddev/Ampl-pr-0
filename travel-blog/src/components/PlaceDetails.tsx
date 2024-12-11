@@ -1,5 +1,9 @@
 import { useParams } from "react-router";
 
+
+/**
+ * eg route: localhost:5173/places/1234554
+ */
 function PlacesDetails() {
 
     const { id } = useParams();

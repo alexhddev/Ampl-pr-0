@@ -16,16 +16,19 @@ function CreatePlace() {
 
     async function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
-        let placePhotosUrls:string[] = [];
+        let placePhotosUrls: string[] = [];
+        let placePhotosThumbsUrls: string[] = [];
         if (placeName && placeDescription) {
-            if (placePhotos){
-                const urls = await uploadPhotos(placePhotos)
-                placePhotosUrls = urls;
+            if (placePhotos) {
+                const uploadResult = await uploadPhotos(placePhotos)
+                placePhotosUrls = uploadResult.urls;
+                placePhotosThumbsUrls = uploadResult.thumbs;
             }
             const place = await client.create({
                 name: placeName,
                 description: placeDescription,
-                photos: placePhotosUrls
+                photos: placePhotosUrls,
+                thumbs: placePhotosThumbsUrls
             });
             console.log(place);
         }
@@ -39,16 +42,24 @@ function CreatePlace() {
         }
     }
 
-    async function uploadPhotos(files:File[]){
-        const urls:string[] = [];
+    async function uploadPhotos(files: File[]):Promise<{
+        urls: string[]
+        thumbs: string[]
+    }> {
+        const urls: string[] = [];
+        const thumbs: string[] = []
         for (const file of files) {
             const result = await uploadData({
                 data: file,
                 path: `originals/${file.name}`
             }).result
             urls.push(result.path);
+            thumbs.push(`thumbs/${file.name}`)
         }
-        return urls;   
+        return {
+            urls,
+            thumbs
+        };
     }
 
     function renderPhotos() {
