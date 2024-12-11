@@ -5,7 +5,12 @@ import { data } from './data/resource';
 /**
  * @see https://docs.amplify.aws/react/build-a-backend/ to add storage, functions, and more
  */
-defineBackend({
+const backend = defineBackend({
   auth,
   data,
 });
+
+// backend.data.resources.cfnResources.amplifyDynamoDbTables['Game'].timeToLiveAttribute = {
+//   enabled: true,
+//   attributeName: 'expireAt'
+// }
