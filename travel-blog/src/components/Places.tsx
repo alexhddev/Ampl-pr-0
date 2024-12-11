@@ -1,12 +1,8 @@
-import CreatePlace from "./CreatePlace";
-
-
 
 function Places() {
 
     return <main>
-        <h1>Create places:</h1><br/>
-        <CreatePlace></CreatePlace>
+        <h1>Place component where we see all components</h1><br/>
     </main>
 }
 
