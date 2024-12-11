@@ -14,13 +14,10 @@ function GameIntro(props: GameIntroProps) {
 
     async function createGame() {
 
-
         const gameExpiration = new Date().getTime() + 1000 * 60 * 60
-        console.log(gameExpiration)
         const createResult = await gameClient.create({
             expireAt:gameExpiration
         })
-        console.log(createResult)
         const id = createResult.data?.id
         if (id) {
             props.gameIdSetter(id)

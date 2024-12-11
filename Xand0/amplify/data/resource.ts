@@ -10,7 +10,7 @@ const schema = a.schema({
       lastMoveBy: a.string(),
       expireAt: a.timestamp()
     })
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -18,7 +18,10 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: 'iam',
+    defaultAuthorizationMode: 'apiKey',
+    apiKeyAuthorizationMode: {
+      expiresInDays: 365,
+    }
   },
 });
 
