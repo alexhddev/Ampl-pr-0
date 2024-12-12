@@ -3,6 +3,7 @@ import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import PlaceComponent from "./Place";
 
+
 export type Place = Schema["Place"]['type']
 
 

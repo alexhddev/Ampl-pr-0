@@ -1,4 +1,5 @@
 import { type Place } from "./Places";
+import { StorageImage } from '@aws-amplify/ui-react-storage';
 
 
 
@@ -10,7 +11,11 @@ export default function PlaceComponent(props: {
         const rows: any[] = []
         props.place.thumbs?.forEach((photo, index) => {
             if(photo){
-                rows.push(<img src={photo} key={index} />)
+                /**
+                 * Files can be also handled with the aws-amplify/storage package:
+                 * https://docs.amplify.aws/angular/build-a-backend/storage/download-files/
+                 */
+                rows.push(<StorageImage path={photo} alt={photo} key={index}/>)
             }
         })
         return rows;
