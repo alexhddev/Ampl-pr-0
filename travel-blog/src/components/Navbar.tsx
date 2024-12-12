@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router'
 
 
 export default function NavBar() {
+
+    const [userName, setUserName] = useState<string | undefined>()
 
     return <div className="navbar">
         <NavLink to={"/"}>Home</NavLink>

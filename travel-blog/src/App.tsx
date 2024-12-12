@@ -5,6 +5,7 @@ import Home from './components/Home'
 import PlacesDetails from './components/PlaceDetails'
 import CreatePlace from './components/CreatePlace'
 import NavBar from './components/Navbar'
+import Auth from './components/Auth'
 
 function App() {
 
@@ -32,6 +33,10 @@ function App() {
         {
           path: "/places/:id",
           element: <PlacesDetails />
+        },
+        {
+          path: "/auth",
+          element: <Auth />
         }
       ]
     }
