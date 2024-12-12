@@ -31,7 +31,16 @@ function CreatePlace() {
                 thumbs: placePhotosThumbsUrls
             });
             console.log(place);
+            if (place) {
+                clearFields();
+            }
         }
+    }
+
+    function clearFields(){
+        setPlaceName('');
+        setPlaceDescription('');
+        setPlacePhotos([]);
     }
 
     function previewPhotos(event: CustomEvent) {
