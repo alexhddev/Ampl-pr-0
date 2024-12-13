@@ -2,6 +2,11 @@ import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 
 
 const schema = a.schema({
+
+  Comment: a.customType({
+    author: a.string(),
+    content: a.string(),    
+  }),
   Place: a.
     model({
       id: a.id().required(),
@@ -9,17 +14,10 @@ const schema = a.schema({
       description: a.string().required(),
       photos: a.string().array(),
       thumbs: a.string().array(),
-      comments: a.hasMany('Comment', 'placeId'),
+      comments: a.ref('Comment').array(),
       likesBy: a.string().array(),
-    }).authorization((allow) => [allow.publicApiKey()]),
-  Comment: a.
-    model({
-      placeId: a.id(),
-      place: a.belongsTo('Place', 'placeId'),
-      content: a.string().required(),
-      author: a.string().required(),
-    }).authorization((allow) => [allow.publicApiKey()]),
-});
+    })
+}).authorization((allow) => [allow.publicApiKey()]);
 
 export type Schema = ClientSchema<typeof schema>;
 

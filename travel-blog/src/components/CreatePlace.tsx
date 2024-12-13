@@ -3,7 +3,7 @@ import type { Schema } from "../../amplify/data/resource";
 import { uploadData } from "aws-amplify/storage";
 import { SyntheticEvent, useState } from "react";
 
-type CustomEvent = {
+export type CustomEvent = {
     target: HTMLInputElement
 }
 
@@ -37,7 +37,7 @@ function CreatePlace() {
         }
     }
 
-    function clearFields(){
+    function clearFields() {
         setPlaceName('');
         setPlaceDescription('');
         setPlacePhotos([]);
@@ -51,7 +51,7 @@ function CreatePlace() {
         }
     }
 
-    async function uploadPhotos(files: File[]):Promise<{
+    async function uploadPhotos(files: File[]): Promise<{
         urls: string[]
         thumbs: string[]
     }> {
@@ -86,9 +86,9 @@ function CreatePlace() {
         <h1>Here should be a create places form</h1>
         <form onSubmit={(e) => handleSubmit(e)}>
             <label>Place name:</label><br />
-            <input onChange={(e: CustomEvent) => setPlaceName(e.target.value)} /><br />
+            <input value={placeName} onChange={(e: CustomEvent) => setPlaceName(e.target.value)} /><br />
             <label>Place description:</label><br />
-            <input onChange={(e: CustomEvent) => setPlaceDescription(e.target.value)} /><br />
+            <input value={placeDescription} onChange={(e: CustomEvent) => setPlaceDescription(e.target.value)} /><br />
             <label>Place photos:</label><br />
             <input type="file" multiple onChange={(e: CustomEvent) => previewPhotos(e)} /><br />
             {renderPhotos()}<br />

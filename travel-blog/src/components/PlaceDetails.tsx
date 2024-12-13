@@ -1,8 +1,10 @@
 import { useParams } from "react-router";
-import { useEffect, useState } from "react"
+import { SyntheticEvent, useEffect, useState } from "react"
 import { Place } from "./Places";
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
+import { StorageImage } from "@aws-amplify/ui-react-storage";
+import { CustomEvent } from "./CreatePlace";
 
 /**
  * eg route: localhost:5173/places/1234554
@@ -13,31 +15,62 @@ function PlacesDetails() {
 
     const { id } = useParams();
     const [place, setPlace] = useState<Place | undefined>(undefined)
+    const [comment, setComment] = useState<string>('')
 
-    useEffect(() => { 
-        const handleData = async () =>{
-            const subscription = client.models.Place.onUpdate({// not working
-                filter: {
-                    id: {
-                        eq: id
-                    }
-                }
-            }).subscribe({
-                next: (data) => {
-                    console.log(data)
-                    setPlace(data)
+    function renderPhotos() {
+        const rows: any[] = []
+        if (place) {
+            place.photos?.forEach((photo, index) => {
+                if (photo) {
+                    /**
+                     * Files can be also handled with the aws-amplify/storage package:
+                     * https://docs.amplify.aws/angular/build-a-backend/storage/download-files/
+                     */
+                    rows.push(<StorageImage path={photo} alt={photo} key={index} height={300} />)
                 }
             })
-            return () => subscription.unsubscribe();
+        }
+        return rows;
+    }
+
+    useEffect(() => {
+        const handleData = async () => {
+            const result = await client.models.Place.get({ id: id! })
+            if (result.data) {
+                setPlace(result.data)
+            }
         }
         handleData();
     }, [])
 
+    async function addComment(event: SyntheticEvent) {
+        event.preventDefault();
+        if (comment) {
+            const currentComments = place?.comments ? place.comments : []
+            const addCommentResult = await client.models.Place.update({
+                id: id!,
+                comments: [...currentComments!, {
+                    author: 'user',
+                    content: comment
+                }]
+            })
+            console.log(addCommentResult)
+            setComment('')
+        }
+    }
+
 
     return <main>
-        <h1>Details for place {id}</h1><br />
+        <h2>Details for place {place?.name}</h2><br />
         <p>{place?.name}</p>
         <p>{place?.description}</p>
+        {renderPhotos()}
+        <br />
+        <form onSubmit={(e) => addComment(e)}>
+            <input onChange={(e: CustomEvent) => setComment(e.target.value)} value={comment}/><br />
+            <input type="submit" value='Add comment' />
+        </form>
+        <p>Comments:</p>
     </main>
 }
 
