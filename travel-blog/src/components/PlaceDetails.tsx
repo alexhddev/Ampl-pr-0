@@ -41,20 +41,34 @@ function PlacesDetails() {
             }
         }
         handleData();
+        const sub = client.models.Place.onUpdate({
+            filter: {
+                id: {
+                    eq: id!
+                }
+            }
+        }).subscribe({
+            next: (data)=>{
+                if (data) {
+                    setPlace(data)
+                }
+            }
+        })
+        return () => sub.unsubscribe();
     }, [])
 
     async function addComment(event: SyntheticEvent) {
         event.preventDefault();
         if (comment) {
             const currentComments = place?.comments ? place.comments : []
-            const addCommentResult = await client.models.Place.update({
+            console.log(currentComments)
+            await client.models.Place.update({
                 id: id!,
                 comments: [...currentComments!, {
                     author: 'user',
                     content: comment
                 }]
             })
-            console.log(addCommentResult)
             setComment('')
         }
     }
@@ -67,7 +81,7 @@ function PlacesDetails() {
         {renderPhotos()}
         <br />
         <form onSubmit={(e) => addComment(e)}>
-            <input onChange={(e: CustomEvent) => setComment(e.target.value)} value={comment}/><br />
+            <input onChange={(e: CustomEvent) => setComment(e.target.value)} value={comment} /><br />
             <input type="submit" value='Add comment' />
         </form>
         <p>Comments:</p>
