@@ -5,6 +5,7 @@ import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
 import { CustomEvent } from "./CreatePlace";
+import Comment from "./Comment";
 
 /**
  * eg route: localhost:5173/places/1234554
@@ -61,7 +62,6 @@ function PlacesDetails() {
         event.preventDefault();
         if (comment) {
             const currentComments = place?.comments ? place.comments : []
-            console.log(currentComments)
             await client.models.Place.update({
                 id: id!,
                 comments: [...currentComments!, {
@@ -71,6 +71,20 @@ function PlacesDetails() {
             })
             setComment('')
         }
+    }
+
+    function renderComments(){
+        const rows: any[] = []
+        if (place?.comments) {
+            for (let index = 0; index < place.comments.length; index++) {
+                const comment = place.comments[index];
+                rows.push(
+                    <Comment  author={comment?.author} content={comment?.content} key={index}/>
+                )
+                
+            }
+        }
+        return rows
     }
 
 
@@ -85,6 +99,7 @@ function PlacesDetails() {
             <input type="submit" value='Add comment' />
         </form>
         <p>Comments:</p>
+        {renderComments()}
     </main>
 }
 
