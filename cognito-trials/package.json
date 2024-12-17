@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "npx tsx src/test.ts"
+    "start": "node --experimental-strip-types --experimental-transform-types --no-warnings src/test.ts"
   },
   "keywords": [],
   "author": "",
