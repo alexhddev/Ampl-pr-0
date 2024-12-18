@@ -1,11 +1,12 @@
 import { SignInOutput, fetchAuthSession, signIn } from "@aws-amplify/auth";
 import { Amplify } from "aws-amplify";
+import config from '../config.json'
 
 Amplify.configure({
     Auth:{
         Cognito: {
-            userPoolId: 'eu-central-1_QtHreAr5Q',
-            userPoolClientId: '6dmdojf6o0f458l7j9ea7f2s86'
+            userPoolId: config.amplify.userPoolId,
+            userPoolClientId: config.amplify.userPoolClientId
         }
     }
 })

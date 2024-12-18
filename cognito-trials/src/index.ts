@@ -1,7 +1,10 @@
 import { getSession, login } from './login.ts'
+import config from '../config.json'
 
 async function main() {
-    const result = await login('barosanu', 'Isdufhie354$')
+    const result = await login(
+        config.credentials.username,
+        config.credentials.password)
     console.log('result: ')
     console.log(JSON.stringify(result, null, 2))
 
