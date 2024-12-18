@@ -15,5 +15,9 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@aws-amplify/auth": "^6.8.3",
+    "aws-amplify": "^6.10.3"
   }
 }
