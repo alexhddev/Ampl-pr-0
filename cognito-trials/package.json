@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node --experimental-strip-types --experimental-transform-types --no-warnings src/test.ts"
+    "start": "npx tsx src/index.ts"
   },
   "keywords": [],
   "author": "",
