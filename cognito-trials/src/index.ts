@@ -1,4 +1,4 @@
-import { getSession, login } from './login.ts'
+import { getSession, login, generateTemporaryCredentials } from './login.ts'
 import config from '../config.json'
 
 async function main() {
@@ -13,8 +13,16 @@ async function main() {
     console.log(JSON.stringify(session, null, 2))
 
     console.log('How a token looks: ')
-    const idToken = session.tokens?.accessToken.toString();
+    const idToken = session.tokens?.idToken?.toString();
     console.log(idToken)
+
+    if (idToken) {
+        console.log('Getting temporary credentials for authenticated user: ')
+        const authCredentials = await generateTemporaryCredentials(idToken)
+        console.log(JSON.stringify(authCredentials, null, 2))
+    }
+
+
 }
 
 main()
