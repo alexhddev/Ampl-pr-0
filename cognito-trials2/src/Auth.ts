@@ -33,6 +33,7 @@ export async function generateTemporaryCredentials(idToken: string) {
     const cognitoIdentity = new CognitoIdentityClient({
         credentials: fromCognitoIdentityPool({
             identityPoolId: config.amplify.identityPoolId,
+            clientConfig: { region: config.aws.region },
             logins : {
                 [cognitoIdentityPool]: idToken
             }
@@ -47,6 +48,7 @@ export async function generateTemporaryGuestCredentials() {
     const cognitoIdentity = new CognitoIdentityClient({
         credentials: fromCognitoIdentityPool({
             identityPoolId: config.amplify.identityPoolId,
+            clientConfig: { region: config.aws.region },
             logins : {
             }
         })

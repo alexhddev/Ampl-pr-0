@@ -11,5 +11,11 @@
   "devDependencies": {
     "typescript": "~5.6.2",
     "vite": "^6.0.1"
+  },
+  "dependencies": {
+    "@aws-amplify/auth": "^6.8.3",
+    "@aws-sdk/client-cognito-identity": "^3.714.0",
+    "@aws-sdk/credential-providers": "^3.715.0",
+    "aws-amplify": "^6.10.3"
   }
 }

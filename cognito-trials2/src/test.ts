@@ -1,4 +1,4 @@
-import { getSession, login, generateTemporaryCredentials, generateTemporaryGuestCredentials } from './login.ts'
+import { getSession, login, generateTemporaryCredentials, generateTemporaryGuestCredentials } from './Auth.ts'
 import config from '../config.json'
 
 async function main() {
@@ -6,11 +6,11 @@ async function main() {
         config.credentials.username,
         config.credentials.password)
     console.log('result: ')
-    console.log(JSON.stringify(result, null, 2))
+    console.log(result)
 
     const session = await getSession();
     console.log('session: ')
-    console.log(JSON.stringify(session, null, 2))
+    console.log(session)
 
     console.log('How a token looks: ')
     const idToken = session.tokens?.idToken?.toString();
@@ -19,14 +19,14 @@ async function main() {
     if (idToken) {
         console.log('Getting temporary credentials for authenticated user: ')
         const authCredentials = await generateTemporaryCredentials(idToken)
-        console.log(JSON.stringify(authCredentials, null, 2))
+        console.log(authCredentials)
     }
 
     console.log('Getting temporary credentials for guest user: ')
     const authCredentials = await generateTemporaryGuestCredentials()
-    console.log(JSON.stringify(authCredentials, null, 2))
-
-
+    console.log(authCredentials)
 }
 
-main()
+export async function test(element: HTMLButtonElement) {
+  element.addEventListener('click', () => main())
+}
