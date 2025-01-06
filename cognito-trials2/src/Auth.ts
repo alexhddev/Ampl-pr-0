@@ -27,32 +27,32 @@ export async function getSession() {
     return session;
 }
 
-// export async function generateTemporaryCredentials(idToken: string) {
+export async function generateTemporaryCredentials(idToken: string) {
 
-//     const cognitoIdentityPool = `cognito-idp.${config.aws.region}.amazonaws.com/${config.amplify.userPoolId}`;
-//     const cognitoIdentity = new CognitoIdentityClient({
-//         credentials: fromCognitoIdentityPool({
-//             identityPoolId: config.amplify.identityPoolId,
-//             clientConfig: { region: config.aws.region },
-//             logins : {
-//                 [cognitoIdentityPool]: idToken
-//             }
-//         })
-//     });
-//     const credentials = await cognitoIdentity.config.credentials();
-//     return credentials;
-// }
+    const cognitoIdentityPool = `cognito-idp.${config.aws.region}.amazonaws.com/${config.amplify.userPoolId}`;
+    const cognitoIdentity = new CognitoIdentityClient({
+        credentials: fromCognitoIdentityPool({
+            identityPoolId: config.amplify.identityPoolId,
+            clientConfig: { region: config.aws.region },
+            logins : {
+                [cognitoIdentityPool]: idToken
+            }
+        })
+    });
+    const credentials = await cognitoIdentity.config.credentials();
+    return credentials;
+}
 
-// export async function generateTemporaryGuestCredentials() {
+export async function generateTemporaryGuestCredentials() {
 
-//     const cognitoIdentity = new CognitoIdentityClient({
-//         credentials: fromCognitoIdentityPool({
-//             identityPoolId: config.amplify.identityPoolId,
-//             clientConfig: { region: config.aws.region },
-//             logins : {
-//             }
-//         })
-//     });
-//     const credentials = await cognitoIdentity.config.credentials();
-//     return credentials;
-// }
+    const cognitoIdentity = new CognitoIdentityClient({
+        credentials: fromCognitoIdentityPool({
+            identityPoolId: config.amplify.identityPoolId,
+            clientConfig: { region: config.aws.region },
+            logins : {
+            }
+        })
+    });
+    const credentials = await cognitoIdentity.config.credentials();
+    return credentials;
+}
