@@ -8,7 +8,7 @@ const schema = a.schema({
     .authorization(
       (allow) => [
         allow.guest(),
-        allow.authenticated()      
+        allow.authenticated()// de adaugat asta ulterior, de analizat eroarea
       ]),
   Task: a
     .model({
