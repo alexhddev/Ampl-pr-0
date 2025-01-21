@@ -1,14 +1,12 @@
-import type { Schema } from "../../amplify/data/resource";
+import type { OwnerSchema } from "../../amplify/data/owner-resource";
 import { generateClient } from "aws-amplify/data";
 import { useEffect, useState } from "react";
 
-type TaskType = Schema['Task']['type']
-
-
+type TaskType = OwnerSchema['Task']['type']
 
 export function Tasks() {
 
-    const tasksClient = generateClient<Schema>().models.Task
+    const tasksClient = generateClient<OwnerSchema>().models.Task
 
     const [tasks, setTasks] = useState<Array<TaskType>>([])
 
@@ -25,8 +23,8 @@ export function Tasks() {
     }
 
     return <main>
-        <button onClick={createPlace}>Create place</button>
-        <h3>All places:</h3>
+        <button onClick={createPlace}>Create Task</button>
+        <h3>All tasks:</h3>
         <ul>
             {tasks.map((task) => (
                 <li key={task.id}>{task.description}</li>

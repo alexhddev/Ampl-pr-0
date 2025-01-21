@@ -4,7 +4,7 @@ import { Places } from "./components/Places"
 function App() {
   return (
     <div>
-      {/* <Places></Places> */}
+      <Places></Places>
       <AuthWrapper></AuthWrapper>
     </div>
   )
