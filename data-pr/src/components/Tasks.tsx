@@ -11,7 +11,9 @@ export function Tasks() {
     const [tasks, setTasks] = useState<Array<TaskType>>([])
 
     useEffect(() => {
-        tasksClient.observeQuery().subscribe({
+        tasksClient.observeQuery({
+            authMode: 'userPool'
+        }).subscribe({
             next: (data) => setTasks([...data.items])
         });
     }, []);

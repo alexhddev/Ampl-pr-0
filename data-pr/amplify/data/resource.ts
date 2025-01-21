@@ -6,7 +6,10 @@ const schema = a.schema({
       location: a.string(),
     })
     .authorization(
-      (allow) => [allow.guest(),]),
+      (allow) => [
+        allow.guest(),
+        allow.authenticated()      
+      ]),
   Task: a
     .model({
       description: a.string(),
@@ -19,6 +22,6 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: 'identityPool',
+    defaultAuthorizationMode: 'userPool',
   },
 });

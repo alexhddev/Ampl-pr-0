@@ -13,7 +13,9 @@ export function Places() {
     const [places, setPlaces] = useState<Array<PlaceType>>([])
 
     useEffect(() => {
-        placesClient.observeQuery().subscribe({
+        placesClient.observeQuery({
+            authMode: 'identityPool'
+        }).subscribe({
             next: (data) => setPlaces([...data.items])
         });
     }, []);
@@ -21,6 +23,8 @@ export function Places() {
     function createPlace() {
         placesClient.create({
             location: window.prompt('Place location')
+        }, {
+            authMode: 'identityPool'
         })
     }
 
