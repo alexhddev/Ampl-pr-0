@@ -1,14 +1,14 @@
-import type { GuestSchema } from "../../amplify/data/guest-resource";
+import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import { useEffect, useState } from "react";
 
-type PlaceType = GuestSchema['Place']['type']
+type PlaceType = Schema['Place']['type']
 
 
 
 export function Places() {
 
-    const placesClient = generateClient<GuestSchema>().models.Place
+    const placesClient = generateClient<Schema>().models.Place
 
     const [places, setPlaces] = useState<Array<PlaceType>>([])
 
