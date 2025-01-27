@@ -21,6 +21,8 @@ export function Tasks() {
     function createPlace() {
         tasksClient.create({
             description: window.prompt('Task description')
+        }, {
+            authMode: 'userPool'
         })
     }
 

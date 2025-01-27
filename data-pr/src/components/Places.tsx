@@ -14,7 +14,7 @@ export function Places() {
 
     useEffect(() => {
         placesClient.observeQuery({
-            authMode: 'identityPool'
+            authMode: 'apiKey'
         }).subscribe({
             next: (data) => setPlaces([...data.items])
         });
@@ -24,7 +24,7 @@ export function Places() {
         placesClient.create({
             location: window.prompt('Place location')
         }, {
-            authMode: 'identityPool'
+            authMode: 'apiKey'
         })
     }
 

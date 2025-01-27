@@ -7,8 +7,8 @@ const schema = a.schema({
     })
     .authorization(
       (allow) => [
-        allow.guest(),
-        allow.authenticated()// de adaugat asta ulterior, de analizat eroarea
+
+        allow.publicApiKey()// de adaugat asta ulterior, de analizat eroarea
       ]),
   Task: a
     .model({
@@ -22,6 +22,6 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: 'userPool',
+    defaultAuthorizationMode: 'apiKey',
   },
 });
