@@ -8,13 +8,16 @@ const schema = a.schema({
     .authorization(
       (allow) => [
 
-        allow.publicApiKey()// de adaugat asta ulterior, de analizat eroarea
+        allow.publicApiKey()
       ]),
   Task: a
     .model({
       description: a.string(),
     })
-    .authorization(allow => [allow.owner()]),
+    .authorization(allow => [
+      allow.owner(),
+      allow.group('Admins').to(['read'])
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
