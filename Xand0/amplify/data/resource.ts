@@ -7,8 +7,7 @@ const schema = a.schema({
       playerX: a.string(),
       player0: a.string(),
       moves: a.string().array(),
-      lastMoveBy: a.string(),
-      expireAt: a.timestamp()
+      lastMoveBy: a.string()
     })
     .authorization((allow) => [allow.publicApiKey()]),
 });
