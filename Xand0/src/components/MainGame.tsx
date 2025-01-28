@@ -167,7 +167,6 @@ function MainGame(props: { gameId: string }) {
     }
 
     async function clickCell(row: allowedNumbers, col: allowedNumbers) {
-        console.log(`click: row ${row} col ${col}`)
         if (gameState[row][col] !== '') {
             return;
         }
