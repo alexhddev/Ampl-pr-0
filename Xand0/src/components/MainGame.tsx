@@ -11,6 +11,10 @@ type cell = {
     side: Xor0
 }
 
+type withUnSub = {
+    unsubscribe: Function
+}
+
 function MainGame(props: { gameId: string }) {
 
     const client = generateClient<Schema>();
@@ -23,6 +27,8 @@ function MainGame(props: { gameId: string }) {
         ['', '', ''],
         ['', '', '']
     ])
+    let initialSub: withUnSub | undefined
+    let movesSub: withUnSub | undefined
 
     if (!nickName) {
         const name = window.prompt('Enter your name', 'player') + '_' + Math.floor(Math.random() * 101).toString();
@@ -30,31 +36,52 @@ function MainGame(props: { gameId: string }) {
     }
 
     useEffect(() => {
-        const handleData = async () => {
-            const sub = client.models.Game.onUpdate({
-                filter: {
-                    id: {
-                        eq: props.gameId
-                    },
-                    lastMoveBy: {
-                        ne: side
-                    }
+        console.log(`subscribing to updates for game ${props.gameId} and side: ${side}`)
+        initialSub = client.models.Game.onUpdate({
+            filter: {
+                id: {
+                    eq: props.gameId
                 }
-            }).subscribe({
-                next: (data) => {
-                    setGame(data)
-                    if (data.moves) {
-                        updateCells(data.moves)
-                    }
-                },
-                error: (err) => {
-                    console.log('error: ' + err)
-                }
-            });
-            return () => sub.unsubscribe();
-        }
-        handleData()
+            }
+        }).subscribe({
+            next: (data) => {
+                setGame(data)
+            },
+            error: (err) => {
+                console.log('error: ' + err)
+            }
+        });
     }, [])
+
+    function subscribeForGameMoves(arg: 'X' | '0'){
+        if (initialSub) {
+            initialSub.unsubscribe();
+        }
+        console.log(`Side chosen, subscribing to updates for game ${props.gameId} and side: ${arg}`)
+        movesSub = client.models.Game.onUpdate({
+            filter: {
+                id: {
+                    eq: props.gameId
+                },
+                lastMoveBy: {
+                    ne: arg
+                }
+            }
+        }).subscribe({
+            next: (data) => {
+                console.log('received game data: ')
+                console.log(data)
+                setGame(data)
+                if (data.moves) {
+                    updateCells(data.moves)
+                }
+            },
+            error: (err) => {
+                console.log('error: ' + err)
+            }
+        })
+        console.log(movesSub)
+    }
 
     function updateCells(moves: Array<string | null>) {
         const cells = parseUpdates(moves)
@@ -63,6 +90,7 @@ function MainGame(props: { gameId: string }) {
             newGameState[cell.row][cell.col] = cell.side
         })
         setGameState(newGameState)
+        checkForVictoryAndShowMessage(newGameState)
     }
 
     function parseUpdates(moves: Array<string | null>): cell[] {
@@ -104,6 +132,7 @@ function MainGame(props: { gameId: string }) {
         }
         setSide(arg)
         window.alert(`You chose ${arg}`)
+        subscribeForGameMoves(arg);
     }
 
     function renderSideChooser() {
@@ -162,6 +191,9 @@ function MainGame(props: { gameId: string }) {
     function checkForVictoryAndShowMessage(cells: cellState[][]) {
         const winner = checkForVictory(cells)
         if (winner) {
+            if (movesSub) {
+                movesSub.unsubscribe();
+            }
             if (winner == side) {
                 setStatusMessage('You won!')
             } else {
@@ -213,7 +245,7 @@ function MainGame(props: { gameId: string }) {
 
     return (
         <div>
-            <h1>Main Game</h1>
+            <h2>Main Game</h2>
             <p>Game ID: {props.gameId}</p>
             {renderSideChooser()}
             <br />
