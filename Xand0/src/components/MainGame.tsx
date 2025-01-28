@@ -36,7 +36,6 @@ function MainGame(props: { gameId: string }) {
     }
 
     useEffect(() => {
-        console.log(`subscribing to updates for game ${props.gameId} and side: ${side}`)
         initialSub = client.models.Game.onUpdate({
             filter: {
                 id: {
@@ -57,7 +56,7 @@ function MainGame(props: { gameId: string }) {
         if (initialSub) {
             initialSub.unsubscribe();
         }
-        console.log(`Side chosen, subscribing to updates for game ${props.gameId} and side: ${arg}`)
+        console.log(`Side chosen, subscribing to updates for game ${props.gameId} and side NOT ${arg}`)
         movesSub = client.models.Game.onUpdate({
             filter: {
                 id: {
@@ -80,7 +79,6 @@ function MainGame(props: { gameId: string }) {
                 console.log('error: ' + err)
             }
         })
-        console.log(movesSub)
     }
 
     function updateCells(moves: Array<string | null>) {
