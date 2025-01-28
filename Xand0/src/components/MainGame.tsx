@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
-import { useAuthenticator } from "@aws-amplify/ui-react";
 
 type Xor0 = 'X' | '0'
 type cellState = '' | Xor0
@@ -15,6 +14,8 @@ type cell = {
 function MainGame(props: { gameId: string }) {
 
     const client = generateClient<Schema>();
+    const [statusMessage, setStatusMessage] = useState<string | undefined>()
+    const [nickName, setNickName] = useState<string | undefined>()
     const [game, setGame] = useState<Schema['Game']['type']>();
     const [side, setSide] = useState<Xor0 | 'notSetYet'>('notSetYet');
     const [gameState, setGameState] = useState<cellState[][]>([
@@ -23,11 +24,13 @@ function MainGame(props: { gameId: string }) {
         ['', '', '']
     ])
 
-    const userName = useAuthenticator().user.signInDetails?.loginId
+    if (!nickName) {
+        const name = window.prompt('Enter your name', 'player') + '_' + Math.floor(Math.random() * 101).toString();
+        setNickName(name)
+    }
 
     useEffect(() => {
         const handleData = async () => {
-
             const sub = client.models.Game.onUpdate({
                 filter: {
                     id: {
@@ -53,14 +56,13 @@ function MainGame(props: { gameId: string }) {
         handleData()
     }, [])
 
-    function updateCells(moves: Array<string | null>){
+    function updateCells(moves: Array<string | null>) {
         const cells = parseUpdates(moves)
         const newGameState = [...gameState]
         cells.forEach((cell: cell) => {
             newGameState[cell.row][cell.col] = cell.side
         })
         setGameState(newGameState)
-        checkForVictoryAndShowMessage(newGameState)
     }
 
     function parseUpdates(moves: Array<string | null>): cell[] {
@@ -72,8 +74,8 @@ function MainGame(props: { gameId: string }) {
                         row: parseInt(move[0]) as allowedNumbers,
                         col: parseInt(move[1]) as allowedNumbers,
                         side: move[2] as Xor0
-                    }) 
-                }           
+                    })
+                }
             }
         }
         return parsedCells
@@ -83,21 +85,21 @@ function MainGame(props: { gameId: string }) {
         if (arg === 'X') {
             await client.models.Game.update({
                 id: props.gameId,
-                playerX: userName
+                playerX: nickName
             })
             setGame({
                 ...game!,
-                playerX: userName
+                playerX: nickName
             })
         }
         if (arg === '0') {
             await client.models.Game.update({
                 id: props.gameId,
-                player0: userName
+                player0: nickName
             })
             setGame({
                 ...game!,
-                player0: userName
+                player0: nickName
             })
         }
         setSide(arg)
@@ -138,14 +140,14 @@ function MainGame(props: { gameId: string }) {
     }
 
     async function clickCell(row: allowedNumbers, col: allowedNumbers) {
+        console.log(`click: row ${row} col ${col}`)
         if (gameState[row][col] !== '') {
             return;
         }
-        if(game?.lastMoveBy && game.lastMoveBy === side) {
+        if (game?.lastMoveBy && game.lastMoveBy === side) {
             window.alert('Not your turn')
             return;
         }
-        console.log('last move by: ' + game?.lastMoveBy)
         const newGameState = [...gameState]
 
         if (side !== 'notSetYet') {
@@ -157,18 +159,18 @@ function MainGame(props: { gameId: string }) {
 
     }
 
-    function checkForVictoryAndShowMessage(cells: cellState[][]){
+    function checkForVictoryAndShowMessage(cells: cellState[][]) {
         const winner = checkForVictory(cells)
         if (winner) {
-            if (winner === side) {
-                window.alert('You won!')
+            if (winner == side) {
+                setStatusMessage('You won!')
             } else {
-                window.alert('You lost!')
+                setStatusMessage('You lost!')
             }
         }
     }
 
-    function checkForVictory(cells: cellState[][]): cellState{
+    function checkForVictory(cells: cellState[][]): cellState {
         // check for winning combinations and return the winner if there is one
         if (cells[0][0] === cells[0][1] && cells[0][1] === cells[0][2] && cells[0][0] !== '') {
             return cells[0][0]
@@ -201,10 +203,10 @@ function MainGame(props: { gameId: string }) {
     function renderGameTable() {
         if (game?.player0 && game.playerX && side !== 'notSetYet') {
             return <div>
-            <button onClick={() => clickCell(0, 0)}>{gameState[0][0]}</button> <button onClick={() => clickCell(0, 1)}>{gameState[0][1]}</button> <button onClick={() => clickCell(0, 2)}>{gameState[0][2]}</button><br />
-            <button onClick={() => clickCell(1, 0)}>{gameState[1][0]}</button> <button onClick={() => clickCell(1, 1)}>{gameState[1][1]}</button> <button onClick={() => clickCell(1, 2)}>{gameState[1][2]}</button><br />
-            <button onClick={() => clickCell(2, 0)}>{gameState[2][0]}</button> <button onClick={() => clickCell(2, 1)}>{gameState[2][1]}</button> <button onClick={() => clickCell(2, 2)}>{gameState[2][2]}</button><br />
-        </div>
+                <button onClick={() => clickCell(0, 0)}>{gameState[0][0]}</button> <button onClick={() => clickCell(0, 1)}>{gameState[0][1]}</button> <button onClick={() => clickCell(0, 2)}>{gameState[0][2]}</button><br />
+                <button onClick={() => clickCell(1, 0)}>{gameState[1][0]}</button> <button onClick={() => clickCell(1, 1)}>{gameState[1][1]}</button> <button onClick={() => clickCell(1, 2)}>{gameState[1][2]}</button><br />
+                <button onClick={() => clickCell(2, 0)}>{gameState[2][0]}</button> <button onClick={() => clickCell(2, 1)}>{gameState[2][1]}</button> <button onClick={() => clickCell(2, 2)}>{gameState[2][2]}</button><br />
+            </div>
         }
 
     }
@@ -216,6 +218,8 @@ function MainGame(props: { gameId: string }) {
             {renderSideChooser()}
             <br />
             {renderGameTable()}
+            <br />
+            {statusMessage}
 
         </div>
     );

@@ -1,4 +1,3 @@
-import { useAuthenticator } from '@aws-amplify/ui-react';
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 
@@ -8,9 +7,6 @@ type GameIntroProps = {
 
 function GameIntro(props: GameIntroProps) {
     const gameClient = generateClient<Schema>().models.Game;
-
-    const user = useAuthenticator().user;
-    const userName = user.signInDetails?.loginId
 
     async function createGame() {
 
@@ -34,7 +30,7 @@ function GameIntro(props: GameIntroProps) {
 
     return (
         <main>
-            <h1>Welcome to the cool game {userName} !</h1><br/>
+            <h1>Welcome to the cool X&0 game!</h1><br/>
             <button onClick={createGame}>Create game</button><br/>
             <button onClick={joinGame} >Join game</button><br/>
 
