@@ -52,7 +52,7 @@ function MainGame(props: { gameId: string }) {
         });
     }, [])
 
-    function subscribeForGameMoves(arg: 'X' | '0'){
+    function subscribeForGameMoves(arg: 'X' | '0') {
         if (initialSub) {
             initialSub.unsubscribe();
         }
@@ -174,7 +174,9 @@ function MainGame(props: { gameId: string }) {
             return;
         }
         const newGameState = [...gameState]
-
+        if (game) {
+            game.lastMoveBy = side;
+        }
         if (side !== 'notSetYet') {
             newGameState[row][col] = side
             setGameState(newGameState)
