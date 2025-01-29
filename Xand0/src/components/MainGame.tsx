@@ -3,15 +3,15 @@ import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 
 type Xor0 = 'X' | '0'
-type cellState = '' | Xor0
-type allowedNumbers = 0 | 1 | 2
-type cell = {
-    row: allowedNumbers,
-    col: allowedNumbers,
+type CellState = '' | Xor0
+type AllowedNumbers = 0 | 1 | 2
+type Cell = {
+    row: AllowedNumbers,
+    col: AllowedNumbers,
     side: Xor0
 }
 
-type withUnSub = {
+type WithUnSub = {
     unsubscribe: Function
 }
 
@@ -22,13 +22,13 @@ function MainGame(props: { gameId: string }) {
     const [nickName, setNickName] = useState<string | undefined>()
     const [game, setGame] = useState<Schema['Game']['type']>();
     const [side, setSide] = useState<Xor0 | 'notSetYet'>('notSetYet');
-    const [gameState, setGameState] = useState<cellState[][]>([
+    const [gameState, setGameState] = useState<CellState[][]>([
         ['', '', ''],
         ['', '', ''],
         ['', '', '']
     ])
-    let initialSub: withUnSub | undefined
-    let movesSub: withUnSub | undefined
+    let initialSub: WithUnSub | undefined
+    let movesSub: WithUnSub | undefined
 
     if (!nickName) {
         const name = window.prompt('Enter your name', 'player') + '_' + Math.floor(Math.random() * 101).toString();
@@ -56,7 +56,6 @@ function MainGame(props: { gameId: string }) {
         if (initialSub) {
             initialSub.unsubscribe();
         }
-        console.log(`Side chosen, subscribing to updates for game ${props.gameId} and side NOT ${arg}`)
         movesSub = client.models.Game.onUpdate({
             filter: {
                 id: {
@@ -84,21 +83,21 @@ function MainGame(props: { gameId: string }) {
     function updateCells(moves: Array<string | null>) {
         const cells = parseUpdates(moves)
         const newGameState = [...gameState]
-        cells.forEach((cell: cell) => {
+        cells.forEach((cell: Cell) => {
             newGameState[cell.row][cell.col] = cell.side
         })
         setGameState(newGameState)
         checkForVictoryAndShowMessage(newGameState)
     }
 
-    function parseUpdates(moves: Array<string | null>): cell[] {
-        const parsedCells: cell[] = []
+    function parseUpdates(moves: Array<string | null>): Cell[] {
+        const parsedCells: Cell[] = []
         for (const move of moves) {
             if (move) {
                 if (move[2] !== side) {
                     parsedCells.push({
-                        row: parseInt(move[0]) as allowedNumbers,
-                        col: parseInt(move[1]) as allowedNumbers,
+                        row: parseInt(move[0]) as AllowedNumbers,
+                        col: parseInt(move[1]) as AllowedNumbers,
                         side: move[2] as Xor0
                     })
                 }
@@ -157,7 +156,7 @@ function MainGame(props: { gameId: string }) {
         )
     }
 
-    async function updateCell(cell: cell) {
+    async function updateCell(cell: Cell) {
         const gameMoves = game!.moves ? game!.moves : []
         await client.models.Game.update({
             id: props.gameId,
@@ -166,7 +165,7 @@ function MainGame(props: { gameId: string }) {
         })
     }
 
-    async function clickCell(row: allowedNumbers, col: allowedNumbers) {
+    async function clickCell(row: AllowedNumbers, col: AllowedNumbers) {
         if (gameState[row][col] !== '') {
             return;
         }
@@ -185,7 +184,7 @@ function MainGame(props: { gameId: string }) {
 
     }
 
-    function checkForVictoryAndShowMessage(cells: cellState[][]) {
+    function checkForVictoryAndShowMessage(cells: CellState[][]) {
         const winner = checkForVictory(cells)
         if (winner) {
             if (movesSub) {
@@ -199,7 +198,7 @@ function MainGame(props: { gameId: string }) {
         }
     }
 
-    function checkForVictory(cells: cellState[][]): cellState {
+    function checkForVictory(cells: CellState[][]): CellState {
         // check for winning combinations and return the winner if there is one
         if (cells[0][0] === cells[0][1] && cells[0][1] === cells[0][2] && cells[0][0] !== '') {
             return cells[0][0]

@@ -22,7 +22,6 @@ function GameIntro(props: GameIntroProps) {
         if (gameId) {
             props.gameIdSetter(gameId)
         }
-
     }
 
     return (
