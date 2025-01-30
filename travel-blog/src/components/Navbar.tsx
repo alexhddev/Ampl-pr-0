@@ -6,6 +6,6 @@ export default function NavBar() {
         <NavLink to={"/"}>Home</NavLink>
         <NavLink to={"/places"}>Places</NavLink>
         <NavLink to={"/places/create"}>Create</NavLink>
-        <NavLink to={"/auth"} style={{ float: "right" }}>Auth</NavLink>
+        <NavLink to={"/auth"} style={{ float: "right" }}>Login</NavLink>
     </div>
 }
