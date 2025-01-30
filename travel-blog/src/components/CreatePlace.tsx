@@ -1,7 +1,9 @@
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../../amplify/data/resource";
 import { uploadData } from "aws-amplify/storage";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
+import { isLoggedIn } from "../utils/AuthUtils";
+import { NavLink } from "react-router";
 
 export type CustomEvent = {
     target: HTMLInputElement
@@ -13,6 +15,18 @@ function CreatePlace() {
     const [placeName, setPlaceName] = useState<string>('');
     const [placeDescription, setPlaceDescription] = useState<string>('');
     const [placePhotos, setPlacePhotos] = useState<File[]>([]);
+    const [userName, setUserName] = useState<string | undefined>()
+
+    useEffect(() => {
+        const handleData = async () => {
+            const name = await isLoggedIn();
+            if (name) {
+                setUserName(name)
+            }
+        }
+        handleData();
+    }, [])
+
 
     async function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
@@ -33,6 +47,7 @@ function CreatePlace() {
             console.log(place);
             if (place) {
                 clearFields();
+                alert(`Place with id ${place.data?.id} created`)
             }
         }
     }
@@ -81,19 +96,33 @@ function CreatePlace() {
         return photosElements
     }
 
+    function renderCreatePlaceForm() {
+        if (userName) {
+            return (
+                <form onSubmit={(e) => handleSubmit(e)}>
+                    <label>Place name:</label><br />
+                    <input value={placeName} onChange={(e: CustomEvent) => setPlaceName(e.target.value)} /><br />
+                    <label>Place description:</label><br />
+                    <input value={placeDescription} onChange={(e: CustomEvent) => setPlaceDescription(e.target.value)} /><br />
+                    <label>Place photos:</label><br />
+                    <input type="file" multiple onChange={(e: CustomEvent) => previewPhotos(e)} /><br />
+                    {renderPhotos()}<br />
+                    <input type="submit" value='Create place' />
+                </form>
+            )
+        } else {
+            return <div>
+                <h2>Login to create places:</h2>
+                <NavLink to={"/auth"}>Login</NavLink>
+            </div>
+        }
+    }
+
+
+
 
     return <main>
-        <h1>Here should be a create places form</h1>
-        <form onSubmit={(e) => handleSubmit(e)}>
-            <label>Place name:</label><br />
-            <input value={placeName} onChange={(e: CustomEvent) => setPlaceName(e.target.value)} /><br />
-            <label>Place description:</label><br />
-            <input value={placeDescription} onChange={(e: CustomEvent) => setPlaceDescription(e.target.value)} /><br />
-            <label>Place photos:</label><br />
-            <input type="file" multiple onChange={(e: CustomEvent) => previewPhotos(e)} /><br />
-            {renderPhotos()}<br />
-            <input type="submit" value='Create place' />
-        </form>
+        {renderCreatePlaceForm()}
     </main>
 
 }

@@ -6,6 +6,7 @@ import { generateClient } from "aws-amplify/data";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
 import { CustomEvent } from "./CreatePlace";
 import Comment from "./Comment";
+import { isLoggedIn } from "../utils/AuthUtils";
 
 /**
  * eg route: localhost:5173/places/1234554
@@ -17,6 +18,7 @@ function PlacesDetails() {
     const { id } = useParams();
     const [place, setPlace] = useState<Place | undefined>(undefined)
     const [comment, setComment] = useState<string>('')
+    const [userName, setUserName] = useState<string | undefined>()
 
     function renderPhotos() {
         const rows: any[] = []
@@ -36,6 +38,10 @@ function PlacesDetails() {
 
     useEffect(() => {
         const handleData = async () => {
+            const name = await isLoggedIn();
+            if (name) {
+                setUserName(name)
+            }
             const result = await client.models.Place.get({ id: id! })
             if (result.data) {
                 setPlace(result.data)
@@ -49,7 +55,7 @@ function PlacesDetails() {
                 }
             }
         }).subscribe({
-            next: (data)=>{
+            next: (data) => {
                 if (data) {
                     setPlace(data)
                 }
@@ -65,7 +71,7 @@ function PlacesDetails() {
             await client.models.Place.update({
                 id: id!,
                 comments: [...currentComments!, {
-                    author: 'user',
+                    author: userName,
                     content: comment
                 }]
             })
@@ -73,18 +79,30 @@ function PlacesDetails() {
         }
     }
 
-    function renderComments(){
+    function renderComments() {
         const rows: any[] = []
         if (place?.comments) {
             for (let index = 0; index < place.comments.length; index++) {
                 const comment = place.comments[index];
                 rows.push(
-                    <Comment  author={comment?.author} content={comment?.content} key={index}/>
+                    <Comment author={comment?.author} content={comment?.content} key={index} />
                 )
-                
+
             }
         }
         return rows
+    }
+
+    function renderCommentForm() {
+        if (userName) {
+            return (
+                <form onSubmit={(e) => addComment(e)}>
+                    <input onChange={(e: CustomEvent) => setComment(e.target.value)} value={comment} /><br />
+                    <input type="submit" value='Add comment' />
+                </form>
+            )
+        }
+
     }
 
 
@@ -94,10 +112,7 @@ function PlacesDetails() {
         <p>{place?.description}</p>
         {renderPhotos()}
         <br />
-        <form onSubmit={(e) => addComment(e)}>
-            <input onChange={(e: CustomEvent) => setComment(e.target.value)} value={comment} /><br />
-            <input type="submit" value='Add comment' />
-        </form>
+        {renderCommentForm()}
         <p>Comments:</p>
         {renderComments()}
     </main>
