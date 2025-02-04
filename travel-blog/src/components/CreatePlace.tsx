@@ -2,7 +2,7 @@ import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../../amplify/data/resource";
 import { uploadData } from "aws-amplify/storage";
 import { SyntheticEvent, useEffect, useState } from "react";
-import { isLoggedIn } from "../utils/AuthUtils";
+import { checkLoginAndGetName } from "../utils/AuthUtils";
 import { NavLink } from "react-router";
 
 export type CustomEvent = {
@@ -19,7 +19,7 @@ function CreatePlace() {
 
     useEffect(() => {
         const handleData = async () => {
-            const name = await isLoggedIn();
+            const name = await checkLoginAndGetName();
             if (name) {
                 setUserName(name)
             }

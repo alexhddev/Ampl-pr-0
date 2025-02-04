@@ -1,6 +1,6 @@
 import { fetchUserAttributes } from 'aws-amplify/auth';
 
-export async function isLoggedIn(): Promise<string | undefined>{
+export async function checkLoginAndGetName(): Promise<string | undefined>{
     try {
         const attributes = await fetchUserAttributes();
         if (attributes.nickname) {

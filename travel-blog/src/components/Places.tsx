@@ -27,8 +27,7 @@ function Places() {
         for (const place of places) {
             rows.push(<PlaceComponent place={place} key={place.id} />)
         }
-        return rows
-        
+        return rows        
     }
 
     return <main>

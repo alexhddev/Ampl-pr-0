@@ -6,7 +6,7 @@ import { generateClient } from "aws-amplify/data";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
 import { CustomEvent } from "./CreatePlace";
 import Comment from "./Comment";
-import { isLoggedIn } from "../utils/AuthUtils";
+import { checkLoginAndGetName } from "../utils/AuthUtils";
 
 /**
  * eg route: localhost:5173/places/1234554
@@ -38,7 +38,7 @@ function PlacesDetails() {
 
     useEffect(() => {
         const handleData = async () => {
-            const name = await isLoggedIn();
+            const name = await checkLoginAndGetName();
             if (name) {
                 setUserName(name)
             }
@@ -102,19 +102,27 @@ function PlacesDetails() {
                 </form>
             )
         }
-
     }
 
+    function renderPlace() {
+        if (place) {
+            return <div>
+                <h2>Details for place {place?.name}</h2><br />
+                <p>{place?.name}</p>
+                <p>{place?.description}</p>
+                {renderPhotos()}
+                <br />
+                {renderCommentForm()}
+                <p>Comments:</p>
+                {renderComments()}
+            </div>
+        } else {
+            return <h2>Place not found</h2>
+        }
+    }
 
     return <main>
-        <h2>Details for place {place?.name}</h2><br />
-        <p>{place?.name}</p>
-        <p>{place?.description}</p>
-        {renderPhotos()}
-        <br />
-        {renderCommentForm()}
-        <p>Comments:</p>
-        {renderComments()}
+        {renderPlace()}
     </main>
 }
 
