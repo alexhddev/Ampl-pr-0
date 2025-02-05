@@ -1,0 +1,34 @@
+2025-02-05T17:27:15.553Z
+	
+{"timestamp":"2025-02-05T17:27:15.553Z","level":"INFO","requestId":"034e5f78-a48d-4c44-9590-207b1c317552","message":"Handling conversation turn event, currentMessageId=6f44deb7-3969-4fdb-a5e2-1b31eecd22de, conversationId=1e4af4b0-b186-4337-843c-bfe63173dba2"}
+	
+2025-02-05T17:27:15.553Z
+	
+{"time":"2025-02-05T17:27:15.553Z","type":"platform.start","record":{"requestId":"034e5f78-a48d-4c44-9590-207b1c317552","version":"$LATEST"}}
+	
+2025-02-05T17:27:15.702Z
+	
+{"timestamp":"2025-02-05T17:27:15.702Z","level":"INFO","requestId":"034e5f78-a48d-4c44-9590-207b1c317552","message":"Sending Bedrock Converse Stream request"}
+	
+2025-02-05T17:27:15.805Z
+{
+    "timestamp": "2025-02-05T17:27:15.805Z",
+    "level": "ERROR",
+    "requestId": "034e5f78-a48d-4c44-9590-207b1c317552",
+    "message": "Failed to handle conversation turn event, currentMessageId=6f44deb7-3969-4fdb-a5e2-1b31eecd22de, conversationId=1e4af4b0-b186-4337-843c-bfe63173dba2 AccessDeniedException: You don't have access to the model with the specified model ID.\n    at de_AccessDeniedExceptionRes (/var/runtime/node_modules/@aws-sdk/client-bedrock-runtime/dist-cjs/index.js:1061:21)\n    at de_CommandError (/var/runtime/node_modules/@aws-sdk/client-bedrock-runtime/dist-cjs/index.js:1013:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async /var/runtime/node_modules/@aws-sdk/node_modules/@smithy/middleware-serde/dist-cjs/index.js:35:20\n    at async /var/runtime/node_modules/@aws-sdk/node_modules/@smithy/core/dist-cjs/index.js:165:18\n    at async /var/runtime/node_modules/@aws-sdk/node_modules/@smithy/middleware-retry/dist-cjs/index.js:320:38\n    at async /var/runtime/node_modules/@aws-sdk/middleware-logger/dist-cjs/index.js:34:22\n    at async BedrockConverseAdapter.askBedrockStreaming (/var/task/index.js:813:29)\n    at async ConversationTurnExecutor.execute (/var/task/index.js:1009:32)\n    at async Runtime.handleConversationTurnEvent [as handler] (/var/task/index.js:1043:7) {\n  '$fault': 'client',\n  '$metadata': {\n    httpStatusCode: 403,\n    requestId: '50d78b8e-48cb-4e1a-9ddc-c3f9e8272370',\n    extendedRequestId: undefined,\n    cfId: undefined,\n    attempts: 1,\n    totalRetryDelay: 0\n  }\n}",
+    "errorType": "AccessDeniedException",
+    "errorMessage": "You don't have access to the model with the specified model ID.",
+    "stackTrace": [
+        "AccessDeniedException: You don't have access to the model with the specified model ID.",
+        "    at de_AccessDeniedExceptionRes (/var/runtime/node_modules/@aws-sdk/client-bedrock-runtime/dist-cjs/index.js:1061:21)",
+        "    at de_CommandError (/var/runtime/node_modules/@aws-sdk/client-bedrock-runtime/dist-cjs/index.js:1013:19)",
+        "    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+        "    at async /var/runtime/node_modules/@aws-sdk/node_modules/@smithy/middleware-serde/dist-cjs/index.js:35:20",
+        "    at async /var/runtime/node_modules/@aws-sdk/node_modules/@smithy/core/dist-cjs/index.js:165:18",
+        "    at async /var/runtime/node_modules/@aws-sdk/node_modules/@smithy/middleware-retry/dist-cjs/index.js:320:38",
+        "    at async /var/runtime/node_modules/@aws-sdk/middleware-logger/dist-cjs/index.js:34:22",
+        "    at async BedrockConverseAdapter.askBedrockStreaming (/var/task/index.js:813:29)",
+        "    at async ConversationTurnExecutor.execute (/var/task/index.js:1009:32)",
+        "    at async Runtime.handleConversationTurnEvent [as handler] (/var/task/index.js:1043:7)"
+    ]
+}
