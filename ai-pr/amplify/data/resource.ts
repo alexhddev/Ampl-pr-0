@@ -9,7 +9,7 @@ const schema = a.schema({
   ),
     
   generateRecipe: a.generation({
-    aiModel: a.ai.model('Claude 3.5 Haiku'),
+    aiModel: a.ai.model('Claude 3.5 Sonnet'),
     systemPrompt: 'You are a helpful assistant that generates recipes.',
   })
   .arguments({

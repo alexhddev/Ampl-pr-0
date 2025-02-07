@@ -1,11 +1,10 @@
-import { AIConversation, createAIHooks } from '@aws-amplify/ui-react-ai'
-import { generateClient } from "aws-amplify/api";
-import { Schema } from "../../amplify/data/resource";
+import { AIConversation } from '@aws-amplify/ui-react-ai'
+import { useAIConversation } from '../Client';
+
 
 
 function Chat() {
-    const client = generateClient<Schema>({ authMode: "userPool" });
-    const { useAIConversation } = createAIHooks(client);
+
     const chat = useAIConversation('chat')
 
     const messages = chat[0].data.messages;
