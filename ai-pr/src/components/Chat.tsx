@@ -4,7 +4,6 @@ import { useAIConversation } from '../Client';
 
 
 function Chat() {
-
     const chat = useAIConversation('chat')
 
     const messages = chat[0].data.messages;
@@ -15,28 +14,9 @@ function Chat() {
         <AIConversation
             messages={messages}
             handleSendMessage={sendMessage}
-            responseComponents={{
-                Card: {
-                    component: ChatCard,
-                    props: {
-                        text: {
-                            type: 'string'
-                        }
-                    }
-                }
-            }}
         />
 
     </main>
-}
-
-function ChatCard(props: {
-    text: string
-}) {
-    console.log('sdfsdfsd')
-return <div>
-    <h3>{props.text}</h3>
-</div>
 }
 
 export default Chat
