@@ -6,7 +6,7 @@ import { Schema } from "../../amplify/data/resource";
 type Recipe = Exclude<Schema['generateRecipe']['type'], null>
 
 
-function GenerateRecipe() {
+function GenerateSimple() {
 
     const [description, setDescription] = useState("");
     const [generatedRecipe, setGeneratedRecipe] = useState<Recipe | undefined>()
@@ -49,5 +49,5 @@ function GenerateRecipe() {
     </main>
 }
 
-export default GenerateRecipe
+export default GenerateSimple
 

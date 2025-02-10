@@ -4,7 +4,8 @@ import Home from './components/Home'
 import NavBar from './components/NavBar'
 import ChatSimple from './components/ChatSimple'
 import ChatReact from './components/ChatReact'
-import GenerateRecipe from './components/GenerateRecipe'
+import GenerateSimple from './components/GenerateSimple'
+import GenerateReact from './components/GenerateReact'
 
 function App() {
 
@@ -30,8 +31,12 @@ function App() {
           element: <ChatSimple />
         },
         {
+          path: "/generateReact",
+          element: <GenerateReact />
+        },
+        {
           path: "/generateRecipe",
-          element: <GenerateRecipe />
+          element: <GenerateSimple />
         }
       ]
     }
