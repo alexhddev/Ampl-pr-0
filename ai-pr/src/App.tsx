@@ -2,9 +2,10 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router'
 import './App.css'
 import Home from './components/Home'
 import NavBar from './components/NavBar'
-import Chat from './components/Chat'
-import Chat2 from './components/Chat2'
-import Generate from './components/Generate'
+import ChatSimple from './components/ChatSimple'
+import GenerateReact from './components/GenerateReact'
+import ChatReact from './components/ChatReact'
+import GenerateSimple from './components/GenerateSimple'
 
 function App() {
 
@@ -22,16 +23,20 @@ function App() {
           element: <Home />
         },
         {
-          path: "/chat",
-          element: <Chat />
+          path: "/chatReact",
+          element: <ChatReact />
         },
         {
-          path: "/chat2",
-          element: <Chat2 />
+          path: "/chatSimple",
+          element: <ChatSimple />
         },
         {
-          path: "/generate",
-          element: <Generate />
+          path: "/generateReact",
+          element: <GenerateReact />
+        },
+        {
+          path: "/generateSimple",
+          element: <GenerateSimple />
         }
       ]
     }

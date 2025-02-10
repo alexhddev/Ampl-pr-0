@@ -6,7 +6,7 @@ const client = generateClient<Schema>({ authMode: "userPool" });
 const { useAIConversation } = createAIHooks(client);
 
 
-function Chat() {
+function ChatReact() {
 
     const chat = useAIConversation('chat')
 
@@ -52,13 +52,11 @@ function Card(props: {
     unit: string
 }) {
 
-    console.log('Card props: ')
-    console.log(props)
     return <div style={{ border: '1px solid black' }}>
         <h1>{props.city}</h1>
         <h2>{props.temperature} {props.unit}</h2>
     </div>
 }
 
-export default Chat
+export default ChatReact
 

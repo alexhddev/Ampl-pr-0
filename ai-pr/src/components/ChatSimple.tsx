@@ -3,7 +3,7 @@ import { useAIConversation } from '../Client';
 
 
 
-function Chat() {
+function ChatSimple() {
     const chat = useAIConversation('chat')
 
     const messages = chat[0].data.messages;
@@ -19,5 +19,5 @@ function Chat() {
     </main>
 }
 
-export default Chat
+export default ChatSimple
 
