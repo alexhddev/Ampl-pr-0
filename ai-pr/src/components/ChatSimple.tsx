@@ -1,20 +1,17 @@
-import { AIConversation } from '@aws-amplify/ui-react-ai'
-import { useAIConversation } from '../Client';
-
-
+import { client } from '../Client';
 
 function ChatSimple() {
-    const chat = useAIConversation('chat')
-
-    const messages = chat[0].data.messages;
-    const sendMessage = chat[1]
+    async function getConversations(){
+        const result = await client.conversations.chat.list();
+        for (const conversation of result.data) {
+            const messages = await conversation.listMessages();
+            console.log(messages)
+        }
+    }
 
     return <main>
         <h1>Hello to the awesome AI Chat!!</h1><br />
-        <AIConversation
-            messages={messages}
-            handleSendMessage={sendMessage}
-        />
+        <button onClick={getConversations}>Print conversations to console</button>
 
     </main>
 }

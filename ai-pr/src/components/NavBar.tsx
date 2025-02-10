@@ -6,7 +6,6 @@ export default function NavBar() {
         <NavLink to={"/"}>Home</NavLink>
         <NavLink to={"/chatReact"}>ChatReact</NavLink>
         <NavLink to={"/chatSimple"}>ChatSimple</NavLink>
-        <NavLink to={"/generateReact"}>GenerateReact</NavLink>
-        <NavLink to={"/generateSimple"}>GenerateSimple</NavLink>
+        <NavLink to={"/generateRecipe"}>Generate Recipe</NavLink>
     </div>
 }

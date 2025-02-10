@@ -3,9 +3,8 @@ import './App.css'
 import Home from './components/Home'
 import NavBar from './components/NavBar'
 import ChatSimple from './components/ChatSimple'
-import GenerateReact from './components/GenerateReact'
 import ChatReact from './components/ChatReact'
-import GenerateSimple from './components/GenerateSimple'
+import GenerateRecipe from './components/GenerateRecipe'
 
 function App() {
 
@@ -31,12 +30,8 @@ function App() {
           element: <ChatSimple />
         },
         {
-          path: "/generateReact",
-          element: <GenerateReact />
-        },
-        {
-          path: "/generateSimple",
-          element: <GenerateSimple />
+          path: "/generateRecipe",
+          element: <GenerateRecipe />
         }
       ]
     }
