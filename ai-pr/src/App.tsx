@@ -35,7 +35,7 @@ function App() {
           element: <GenerateReact />
         },
         {
-          path: "/generateRecipe",
+          path: "/generateSimple",
           element: <GenerateSimple />
         }
       ]

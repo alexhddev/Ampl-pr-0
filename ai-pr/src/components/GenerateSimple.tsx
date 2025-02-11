@@ -38,11 +38,19 @@ function GenerateSimple() {
         }
     }
 
+    async function generateImage(){
+        const result = await client.queries.generateImage({
+            prompt: `Create an image for this dish: ${description}`
+        })
+        console.log(result)
+    }
+
     return <main>
         <form onSubmit={(e) => handleClick(e)}>
             <label> Recipe:</label>
             <input value={description} onChange={(e) => setDescription(e.target.value)} />
             <input type="submit" value='Generate recipe' />
+            <button onClick={generateImage}>Generate image</button>
         </form>
         <br />
         {renderRecipe()}

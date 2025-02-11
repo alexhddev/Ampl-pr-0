@@ -1,5 +1,6 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { getWeather } from '../functions/weather/resource';
+import { generateImage } from "../functions/generateImage/resource";
 
 const schema = a.schema({
   getWeather: a.query()
@@ -20,8 +21,7 @@ const schema = a.schema({
     }]
   }).authorization(
     (allow) => allow.owner()
-  ),
-    
+  ),    
   generateRecipe: a.generation({
     aiModel: a.ai.model('Claude 3 Haiku'),
     systemPrompt: 'You are a helpful assistant that generates recipes.',
@@ -37,7 +37,14 @@ const schema = a.schema({
     })
   )
   .authorization((allow) => allow.authenticated()),
-
+  generateImage: a
+    .query()
+    .arguments({
+      prompt: a.string(),
+    })
+    .returns(a.string().array())
+    .handler(a.handler.function(generateImage))
+    .authorization((allow) => [allow.authenticated()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
