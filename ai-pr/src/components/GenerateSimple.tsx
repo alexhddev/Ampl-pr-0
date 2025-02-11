@@ -3,13 +3,13 @@ import { client } from "../Client";
 
 import { Schema } from "../../amplify/data/resource";
 
-type Recipe = Exclude<Schema['generateRecipe']['type'], null>
+type Recipe = Schema['generateRecipe']['type']
 
 
 function GenerateSimple() {
 
     const [description, setDescription] = useState("");
-    const [generatedRecipe, setGeneratedRecipe] = useState<Recipe | undefined>()
+    const [generatedRecipe, setGeneratedRecipe] = useState<Recipe>()
 
     const handleClick = async (e: FormEvent) => {
         e.preventDefault()
