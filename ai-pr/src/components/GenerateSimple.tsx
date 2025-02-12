@@ -10,6 +10,7 @@ function GenerateSimple() {
 
     const [description, setDescription] = useState("");
     const [generatedRecipe, setGeneratedRecipe] = useState<Recipe>()
+    const [generatedImage, setGeneratedImage] = useState<string>()
 
     const handleClick = async (e: FormEvent) => {
         e.preventDefault()
@@ -43,6 +44,17 @@ function GenerateSimple() {
             prompt: `Create an image for this dish: ${description}`
         })
         console.log(result)
+        const dataImage = result.data
+        if (dataImage && dataImage[0]) {
+            const image = dataImage[0]
+            setGeneratedImage(`data:image/png;base64,${image}`)
+        }
+    }
+
+    function renderGeneratedImage(){
+        if (generatedImage) {
+            return <img src={generatedImage} alt="Generated image" />
+        }
     }
 
     return <main>
@@ -54,6 +66,7 @@ function GenerateSimple() {
         </form>
         <br />
         {renderRecipe()}
+        {renderGeneratedImage()}
     </main>
 }
 
